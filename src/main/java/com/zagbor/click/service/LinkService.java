@@ -76,5 +76,10 @@ public class LinkService {
         linkRepository.save(linkByShortLink).getOriginalUrl();
     }
 
+    public void deleteExpiredLinks() {
+        linkRepository.findAll().stream()
+                .filter(link -> link.getExpirationDate().isBefore(LocalDateTime.now()))
+                .forEach(linkRepository::delete);
+    }
 
 }
