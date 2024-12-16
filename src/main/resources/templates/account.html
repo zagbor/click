@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Links</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 1200px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logout-btn">
+        <form action="/logout" method="POST">
+            <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+        </form>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <h2 class="text-center mt-5">Account</h2>
+            <div class="card-body">
+                <form id="linkForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="link">Original URL</label>
+                        <input type="text" id="link" name="link" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expirationDateTime">Expiration Date and Time</label>
+                        <input type="datetime-local" id="expirationDateTime" name="expirationDateTime" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="limitOfClicks">Limit of Clicks</label>
+                        <input type="number" id="limitOfClicks" name="limitOfClicks" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Link</button>
+                </form>
+
+                <div id="resultLinks" class="mt-4" style="display: none;">
+                    <h3>Generated Links</h3>
+                    <div>
+                        <label>Short URL:</label>
+                        <a id="shortUrl" href="#" target="_blank"></a>
+                    </div>
+                    <div>
+                        <label>Original URL:</label>
+                        <a id="originalUrl" href="#" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body mt-4">
+                <h3>Links</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Short URL</th>
+                        <th>Original URL</th>
+                        <th>Expiration Date</th>
+                        <th>Limit of Clicks</th>
+                        <th>Number of Clicks</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="links">
+                    <!-- Ссылки загружаются через JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Подключение jQuery из CDN -->
+<script th:src="'https://code.jquery.com/jquery-3.6.0.min.js'"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
