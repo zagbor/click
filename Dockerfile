@@ -4,6 +4,12 @@ FROM openjdk:17-jdk-slim AS build
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
+# Устанавливаем Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Копируем файл pom.xml и загружаем зависимости
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
