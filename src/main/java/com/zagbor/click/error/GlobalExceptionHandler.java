@@ -13,4 +13,10 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", ex.getMessage());
         return "error";
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String handleLinkException(IllegalArgumentException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
+    }
 }
