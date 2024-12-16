@@ -12,7 +12,6 @@ public class LinkCleanerScheduler {
 
     private final LinkService linkService;
 
-
     // Задача для очистки устаревших ссылок, которая будет выполняться раз в день
     @Scheduled(cron = "0 0 * * * ?") // Запускать каждый день в полночь
     @Transactional

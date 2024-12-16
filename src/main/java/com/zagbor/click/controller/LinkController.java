@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,15 +34,17 @@ public class LinkController {
     private final LinkMapper linkMapper;
 
     @GetMapping("/all")
-    public List<LinkDto> getLinks(UUID userId) {
-        logger.info("get all links");
-        return linkService.getLinksByUser(userId).stream()
+    public List<LinkDto> getLinks() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("get links for user {}", authentication.getName());
+        return linkService.getLinksByUser(authentication.getName()).stream()
                 .map(linkMapper::toDto).toList();
     }
 
     @PostMapping("/add")
     public void addLink(@RequestBody LinkDto linkDto, HttpServletRequest request) {
-        linkService.createLink(linkMapper.toEntity(linkDto), request.getHeader("host"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        linkService.createLink(linkMapper.toEntity(linkDto), request.getHeader("host"), authentication.getName());
     }
 
     @PostMapping("/delete")

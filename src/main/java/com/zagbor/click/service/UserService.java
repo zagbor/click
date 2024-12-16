@@ -34,4 +34,8 @@ public class UserService {
         return "Пользователь успешно зарегистрирован.";
     }
 
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
 }

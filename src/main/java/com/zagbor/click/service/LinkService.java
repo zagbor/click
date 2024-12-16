@@ -2,16 +2,15 @@ package com.zagbor.click.service;
 
 import com.zagbor.click.error.LinkException;
 import com.zagbor.click.model.Link;
+import com.zagbor.click.model.User;
 import com.zagbor.click.repository.LinkRepository;
 import com.zagbor.click.utils.LinkGenerator;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,13 +22,15 @@ public class LinkService {
 
     private final LinkRepository linkRepository;
 
+    private final UserService userService;
+
     public void getLink(Long id) {
         clickLink(linkRepository.findById(id).get().getShortUrl());
         linkRepository.findById(id);
     }
 
-    public List<Link> getLinksByUser(UUID userId) {
-        return linkRepository.findByUserId(userId);
+    public List<Link> getLinksByUser(String userName) {
+        return linkRepository.findAllByUser_Username(userName);
     }
 
     public Link getLinkByShortLink(String shortLink, String host) {
@@ -38,7 +39,7 @@ public class LinkService {
         return linkRepository.findByShortUrl(fullShortLink);
     }
 
-    public Link createLink(Link link, String host) {
+    public Link createLink(Link link, String host, String userName) {
         String generatedLink;
         boolean exists;
 
@@ -46,8 +47,10 @@ public class LinkService {
             generatedLink = host + "/" + LinkGenerator.generateLink();
             exists = linkRepository.existsByShortUrl(generatedLink);
         } while (exists);
-
+        User user = userService.getUserByUsername(userName);
+        link.setUser(user);
         link.setShortUrl(generatedLink);
+        link.setCreationDate(LocalDateTime.now());
         return linkRepository.save(link);
     }
 

@@ -5,7 +5,7 @@ $(document).ready(function () {
     $('#linkForm').on('submit', function (event) {
         event.preventDefault();
 
-        const expirationDateInput = $('#expirationDate').val(); // Получаем значение из input
+        const expirationDateInput = $('#expirationDateTime').val(); // Получаем значение из input
         const expirationDate = new Date(expirationDateInput);
 
         // Получаем значения формы
